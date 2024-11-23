@@ -27,7 +27,7 @@ int main(){
     cout << "Second Array (High --> Low)" << endl;
     cout << "------------------------------------------------------------" << endl;
     displayElements(nums2);
-    delete nums2;
+    delete[] nums2;
     cin.ignore();
     cin.get();
     return 0;
