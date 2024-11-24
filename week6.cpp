@@ -1,32 +1,28 @@
 #include <iostream>
 #include <iomanip>
 using namespace std;
+
+
 void sort(int*);
 void getNums(int[]);
-void reverse(int[], int[]);
-void displayElements(int[]);
+void reverse(int*, int*);
+void displayElements(int[], bool);
 void displayNames();
+void deAllocate(int[]);
+
+int const ARRAYLENGTH = 10; // Global since we know all arrays are length of 10
+
 int main(){
-
+    // this time we added everything into functions for organization and readability
+    int arr1[ARRAYLENGTH];
+    int *reversedArr = new int[ARRAYLENGTH]; // allocating array
     displayNames();
-    int arr1[10];
     getNums(arr1);
-    int *nums1 = arr1;
-    sort(nums1);
-    
-    int *nums2 = new int[10];
-    reverse(nums1, nums2);
-
-    cout << "First Array (Low --> High)" << endl;
-    cout << "------------------------------------------------------------" << endl;
-
-    displayElements(nums1);
-
-    cout << "Second Array (High --> Low)" << endl;
-    cout << "------------------------------------------------------------" << endl;
-
-    displayElements(nums2);
-    delete[] nums2;
+    sort(arr1);
+    reverse(arr1, reversedArr);
+    displayElements(arr1, false); // boolean value to determine if reversed or not to diplay proper string before array
+    displayElements(reversedArr, true);
+    deAllocate(reversedArr);
 
     cin.ignore();
     cin.get();
@@ -40,8 +36,9 @@ void displayNames(){
     cout << "Student number:" << setw(14) << "900536880" << endl;
     cout << endl << endl;
 }
+
 void getNums(int arr[]){
-    for (int rep = 0; rep < 10; rep++){
+    for (int rep = 0; rep < ARRAYLENGTH; rep++){
         cout << "Enter number " << rep+1 << ": ";
         cin >> arr[rep];
     }
@@ -52,9 +49,9 @@ void sort(int *num){
     bool checkSwap;
     do{
         checkSwap = false;
-        for (int i = 0; i < 9; i++){
+        for (int i = 0; i < ARRAYLENGTH - 1; i++){
             if (*(num+i) > *(num+i+1)){
-                int temp = *(num + i);
+                temp = *(num + i);
                 *(num+i) = *(num+i+1);
                 *(num+i+1) = temp;
                 //if elements are swapped then the array isn't fully sorted yet
@@ -64,14 +61,25 @@ void sort(int *num){
     }while(checkSwap);
 }
 
-void reverse(int arr1[], int arr2[]){
-    for (int rep = 0; rep < 10; rep++){
-        *(arr2 + rep) = *(arr1 + 9 - rep);
+void reverse(int *arr, int *newArr){
+    for (int i = 0; i < ARRAYLENGTH; i++){
+        *(newArr + i) = *(arr + ARRAYLENGTH -1 - i);
     }
 }
 
-void displayElements(int arr[]){
-    for (int rep = 0; rep < 10; rep++){
+void displayElements(int arr[], bool reversed){
+    if(!reversed){
+        cout << "First Array (Low --> High)" << endl;
+        cout << "------------------------------------------------------------" << endl;
+    }else{
+        cout << "Second Array (High --> Low)" << endl;
+        cout << "------------------------------------------------------------" << endl;
+    }
+    for (int rep = 0; rep < ARRAYLENGTH; rep++){
         cout << "Element " << rep+1 << ": " << *(arr + rep) << endl;
     }
+}
+
+void deAllocate(int arr[]){
+    delete[] arr;
 }
